@@ -7,5 +7,6 @@
     <string name="nameHint">Name</string>
     <string name="enterCardNo">Enter Card Number</string>
     <string name="addressHint">Address</string>
-    <string name="confirmPass">Confirm password</string>
+    <string name="confirmPass">Confirm Password</string>
+    <string name="enterExpDate">Enter Expiry Date</string>
 </resources>
