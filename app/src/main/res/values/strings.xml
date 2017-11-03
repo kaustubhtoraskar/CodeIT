@@ -2,5 +2,10 @@
     <string name="app_name">Wallet</string>
     <string name="emailHint">Email</string>
     <string name="passwordHint">Password</string>
-    <string name="loginBtn">LOGIN</string>
+    <string name="loginBtn">LOG IN</string>
+    <string name="registerBtn">Register</string>
+    <string name="nameHint">Name</string>
+    <string name="enterCardNo">Enter Card Number</string>
+    <string name="addressHint">Address</string>
+    <string name="confirmPass">Confirm password</string>
 </resources>

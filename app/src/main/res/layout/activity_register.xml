@@ -4,6 +4,140 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="svkt.wallet.RegisterActivity">
+    tools:context="svkt.wallet.RegisterActivity"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView2"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+            </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="300dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteY="35dp"
+        tools:layout_editor_absoluteX="30dp" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="300dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:hint="@string/emailHint"
+        android:inputType="textEmailAddress"
+        tools:layout_editor_absoluteY="99dp"
+        tools:layout_editor_absoluteX="30dp" />
+
+    <EditText
+        android:id="@+id/contactno"
+        android:layout_width="300dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:hint="Contact No"
+        android:inputType="phone"
+        tools:layout_editor_absoluteY="167dp"
+        tools:layout_editor_absoluteX="30dp" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="300dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:hint="@string/passwordHint"
+        android:inputType="textPassword"
+        tools:layout_editor_absoluteY="239dp"
+        tools:layout_editor_absoluteX="30dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="158dp"
+        android:layout_height="32dp"
+        android:text="@string/enterCardNo"
+        android:textSize="18sp"
+        tools:layout_editor_absoluteY="383dp"
+        tools:layout_editor_absoluteX="30dp" />
+
+    <EditText
+        android:id="@+id/editText12"
+        android:layout_width="70dp"
+        android:layout_height="42dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteY="428dp"
+        android:layout_marginLeft="15dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <EditText
+        android:id="@+id/editText13"
+        android:layout_width="70dp"
+        android:layout_height="41dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteY="428dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <EditText
+        android:id="@+id/editText14"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteY="428dp"
+        app:layout_constraintRight_toLeftOf="@+id/editText13"
+        android:layout_marginRight="24dp" />
+
+    <EditText
+        android:id="@+id/editText15"
+        android:layout_width="70dp"
+        android:layout_height="41dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteY="428dp"
+        app:layout_constraintLeft_toRightOf="@+id/editText12"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintRight_toLeftOf="@+id/editText14"
+        android:layout_marginRight="8dp" />
+
+    <EditText
+        android:id="@+id/editText16"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/addressHint"
+        android:inputType="textPostalAddress"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="491dp" />
+
+    <EditText
+        android:id="@+id/editText17"
+        android:layout_width="300dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:hint="@string/confirmPass"
+        android:inputType="textPassword"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteY="307dp"
+        android:layout_marginLeft="30dp" />
 
 </android.support.constraint.ConstraintLayout>
