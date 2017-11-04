@@ -5,53 +5,9 @@
     android:layout_height="match_parent"
     tools:context="svkt.wallet.AllFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.LinearLayoutCompat
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/allTransactions"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:orientation="horizontal"
-        >
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            app:srcCompat="@android:drawable/arrow_down_float"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"/>
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="195dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center">
-
-            <TextView
-                android:id="@+id/transactionName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="15dp"
-                android:text="George Bush"
-                android:textSize="28sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="October 30th, 8:00pm"
-                android:textSize="18sp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="15dp"/>
-
-        </android.support.v7.widget.LinearLayoutCompat>
-
-        <TextView
-            android:id="@+id/amount"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </android.support.v7.widget.LinearLayoutCompat>
-
-
-
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
 </FrameLayout>

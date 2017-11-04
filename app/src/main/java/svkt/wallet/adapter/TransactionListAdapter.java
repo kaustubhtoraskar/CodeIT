@@ -20,7 +20,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
 
     Context context;
     ArrayList<Transaction> transactions;
-    TransactionListAdapter(Context context, ArrayList<Transaction> transactions){
+    public TransactionListAdapter(Context context, ArrayList<Transaction> transactions){
 
         this.context = context;
         this.transactions = transactions;
