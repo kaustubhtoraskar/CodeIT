@@ -1,5 +1,6 @@
 package svkt.wallet;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,10 +12,13 @@ import com.google.gson.JsonElement;
 
 import java.util.Map;
 
+import ai.api.AIDataService;
 import ai.api.AIListener;
+import ai.api.AIServiceException;
 import ai.api.android.AIConfiguration;
 import ai.api.android.AIService;
 import ai.api.model.AIError;
+import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
 
@@ -36,6 +40,9 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         resultTextView = (TextView) findViewById(R.id.resultTextView);
 
         configuration = new AIConfiguration(CLIENT_ACCESS_TOKEN,AIConfiguration.SupportedLanguages.English, AIConfiguration.RecognitionEngine.System);
+        final AIDataService dataService = new AIDataService(configuration);
+        final AIRequest aiRequest = new AIRequest();
+        aiRequest.setQuery("Tell me my balance");
 
         aiService = AIService.getService(ChatActivity.this,configuration);
         aiService.setListener(ChatActivity.this);
@@ -43,7 +50,28 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         listenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                aiService.startListening();
+//                aiService.startListening();
+                new AsyncTask<AIRequest,Void,AIResponse>(){
+
+                    @Override
+                    protected AIResponse doInBackground(AIRequest... aiRequests) {
+                        AIRequest request = aiRequests[0];
+                        try{
+                            return dataService.request(request);
+                        }
+                        catch (AIServiceException ignored){
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(AIResponse aiResponse) {
+                        if(aiResponse != null){
+                            Log.e(TAG,"Task Response = " + aiResponse);
+                            onResult(aiResponse);
+                        }
+                    }
+                }.execute(aiRequest);
             }
         });
     }
