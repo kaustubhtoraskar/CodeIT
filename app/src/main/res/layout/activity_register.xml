@@ -76,7 +76,7 @@
                 android:layout_marginBottom="20dp"/>
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/editText17"
+                android:id="@+id/confirmPassword"
                 android:layout_width="300dp"
                 android:layout_height="52dp"
                 android:ems="10"
