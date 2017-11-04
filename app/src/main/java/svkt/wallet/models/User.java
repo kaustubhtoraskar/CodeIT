@@ -11,17 +11,15 @@ public class User {
     public String contactNo;
     public String cardNo;
     public String cardExpiryDate;
-    public String address;
 
     public User(){
     }
 
-    public User(String name, String email, String contactNo, String cardNo, String cardExpiryDate, String address){
+    public User(String name, String email, String contactNo, String cardNo, String cardExpiryDate){
         this.name = name;
         this.email = email;
         this.contactNo = contactNo;
         this.cardNo = cardNo;
         this.cardExpiryDate = cardExpiryDate;
-        this.address = address;
     }
 }
