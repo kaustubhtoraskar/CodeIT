@@ -14,25 +14,29 @@
         tools:layout_editor_absoluteX="8dp"
         android:gravity="center">
 
-        <android.support.v7.widget.AppCompatAutoCompleteTextView
+        <TextView
             android:id="@+id/totalBalance"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="TotalBalance"
+            android:text="Total Balance"
             android:textSize="24sp" />
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/contactNo"
-            android:layout_width="320dp"
+            android:inputType="number"
+            android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginBottom="30dp" />
+            android:layout_marginBottom="30dp"
+            android:hint="Contact No"/>
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/amount"
-            android:layout_width="320dp"
+            android:inputType="number"
+            android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginBottom="30dp" />
+            android:layout_marginBottom="30dp"
+            android:hint="Amount"/>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/transferBtn"

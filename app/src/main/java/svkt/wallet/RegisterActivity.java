@@ -124,17 +124,13 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void uploadData() {
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        if (user != null){
-            Log.e(TAG, "UserId = " + user.getUid());
-            writeNewUser(user.getUid());
+        FirebaseUser fuser = firebaseAuth.getCurrentUser();
+        if (fuser != null){
+            Log.e(TAG, "UserId = " + fuser.getUid());
+            User user = new User(name,email,contactNo,cardNo,expiryDate,0);
+            databaseReference.child("users").child(fuser.getUid()).setValue(user);
         }
         else
             Log.d(TAG, "No user");
-    }
-
-    public void writeNewUser(String userId) {
-        User user = new User(name,email,contactNo,cardNo,expiryDate,0);
-        databaseReference.child("users").child(userId).setValue(user);
     }
 }

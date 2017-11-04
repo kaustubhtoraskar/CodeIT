@@ -1,6 +1,7 @@
 package svkt.wallet;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -124,6 +125,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
     private void doTranscation(){
         messageList.add("Do some transcation");
         recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
+        startActivity(new Intent(ChatActivity.this,TransactionActivity.class));
     }
 
     @Override
