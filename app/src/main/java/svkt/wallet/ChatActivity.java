@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -99,7 +98,10 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                 showBalance();
                 break;
             case "transferFunds":
-                doTranscation();
+                //doTranscation();
+                showPassBook();
+                break;
+            case "passParams":
                 break;
         }
     }
@@ -127,6 +129,10 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         messageList.add("Do some transcation");
         recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
         startActivity(new Intent(ChatActivity.this,TransactionActivity.class));
+    }
+
+    private void showPassBook(){
+        startActivity(new Intent(ChatActivity.this,PassbookActivity.class));
     }
 
     @Override

@@ -4,8 +4,9 @@ package svkt.wallet;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.database.DatabaseUtilsCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,12 @@ import svkt.wallet.adapter.TransactionListAdapter;
 import svkt.wallet.models.Transaction;
 
 public class AllFragment extends Fragment {
+
+    private static final String TAG = "AllFragment";
     RecyclerView allTransactions;
     DatabaseReference dbRef ;
     FirebaseUser user;
-    ArrayList<Transaction> transactions;
+    ArrayList<Transaction> transactionList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,35 +44,39 @@ public class AllFragment extends Fragment {
 
         allTransactions = view.findViewById(R.id.allTransactions);
 
+        transactionList = new ArrayList<>();
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        allTransactions.setLayoutManager(manager);
+        allTransactions.setAdapter(new TransactionListAdapter(getActivity(),transactionList));
+
+        updateList();
+    }
+
+    private void updateList(){
         user = FirebaseAuth.getInstance().getCurrentUser();
         dbRef = FirebaseDatabase.getInstance().getReference().child("transaction").child(user.getUid());
-         transactions = new ArrayList<>();
+        transactionList = new ArrayList<>();
+
         dbRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Transaction transaction = dataSnapshot.getValue(Transaction.class);
-                transactions.add(transaction);
-                allTransactions.setAdapter(new TransactionListAdapter(getActivity(),transactions));
+                Log.e(TAG,"Transaction from = " + transaction.from);
+                transactionList.add(transaction);
+                allTransactions.setAdapter(new TransactionListAdapter(getActivity(),transactionList));
             }
-
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
             }
-
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
-
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
