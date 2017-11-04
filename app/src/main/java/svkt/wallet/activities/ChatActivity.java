@@ -1,4 +1,4 @@
-package svkt.wallet;
+package svkt.wallet.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -31,6 +31,7 @@ import ai.api.model.AIError;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
+import svkt.wallet.R;
 import svkt.wallet.adapter.RequestMessageAdapter;
 import svkt.wallet.models.User;
 

@@ -1,4 +1,4 @@
-package svkt.wallet;
+package svkt.wallet.fragments;
 
 
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import svkt.wallet.R;
 import svkt.wallet.adapter.TransactionListAdapter;
 import svkt.wallet.models.Transaction;
 

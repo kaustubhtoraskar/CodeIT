@@ -1,4 +1,4 @@
-package svkt.wallet;
+package svkt.wallet.activities;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import svkt.wallet.R;
 import svkt.wallet.models.User;
 
 public class RegisterActivity extends AppCompatActivity {

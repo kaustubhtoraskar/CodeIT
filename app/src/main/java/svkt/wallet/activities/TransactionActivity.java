@@ -1,4 +1,4 @@
-package svkt.wallet;
+package svkt.wallet.activities;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import svkt.wallet.R;
 import svkt.wallet.models.Transaction;
 import svkt.wallet.models.User;
 
