@@ -44,7 +44,7 @@ public class TransactionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
-        getSupportActionBar().setTitle("@string/transferFunds");
+        getSupportActionBar().setTitle("Transfer Funds");
 
         totalBalanceText = findViewById(R.id.totalBalance);
         contactNoEdit = findViewById(R.id.contactNo);

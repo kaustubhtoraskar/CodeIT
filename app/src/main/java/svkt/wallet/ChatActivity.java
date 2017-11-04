@@ -77,7 +77,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         listenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                aiService.startListening();
+//              aiService.startListening();
                 request = requestEdit.getText().toString();
                 messageList.add(request);
                 recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
