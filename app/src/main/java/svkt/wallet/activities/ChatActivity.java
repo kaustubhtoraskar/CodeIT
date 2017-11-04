@@ -19,8 +19,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import ai.api.AIDataService;
 import ai.api.AIListener;
@@ -99,10 +101,23 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                 showBalance();
                 break;
             case "transferFunds":
-                //doTranscation();
-                showPassBook();
+                doTranscation();
+                //showPassBook();
                 break;
             case "passParams":
+                HashMap<String, JsonElement> map = result.getParameters();
+                ArrayList<String> params = new ArrayList<String>();
+                for(String key : map.keySet()){
+                    Log.e(TAG,"Key = " + key);
+                    params.add(String.valueOf(map.get(key)));
+                }
+
+                if(params.size() == 2){
+                    Intent intent = new Intent(ChatActivity.this,TransactionActivity.class);
+                    intent.putExtra("PHONE_NO",params.get(0));
+                    intent.putExtra("AMOUNT",params.get(1));
+                    startActivity(intent);
+                }
                 break;
         }
     }

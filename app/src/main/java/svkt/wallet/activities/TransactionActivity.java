@@ -52,6 +52,13 @@ public class TransactionActivity extends AppCompatActivity {
         amountEdit = findViewById(R.id.amount);
         transferBtn = findViewById(R.id.transferBtn);
 
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            String phoneNo = bundle.getString("PHONE_NO");
+            String amount = bundle.getString("AMOUNT");
+            contactNoEdit.setText(phoneNo.substring(1,phoneNo.length()-2));
+            amountEdit.setText(amount.substring(1,amount.length()-2));
+        }
         getSelfUser();
 
         transferBtn.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +120,7 @@ public class TransactionActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);
+                totalBalanceText.setText("" + currentUser.balance);
             }
 
             @Override
