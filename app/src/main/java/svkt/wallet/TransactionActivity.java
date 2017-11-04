@@ -19,6 +19,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 import svkt.wallet.models.User;
 
 public class TransactionActivity extends AppCompatActivity {
@@ -32,6 +34,7 @@ public class TransactionActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
     private User currentUser,destUser;
+    private String hashKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +81,14 @@ public class TransactionActivity extends AppCompatActivity {
         return true;
     }
 
-    private void doTransaction(User destUser){
-        Log.e(TAG,"Dest user balance = " + destUser.balance);
+    private void doTransaction(String hashKey,long destAmount){
+        destAmount += Long.parseLong(amount);
+        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentUser.balance -= Long.parseLong(amount);
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
+        reference.child(hashKey).child("balance").setValue(destAmount);
+        reference.child(fUser.getUid()).child("balance").setValue(currentUser.balance);
     }
 
     private void getSelfUser(){
@@ -88,13 +97,11 @@ public class TransactionActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                hideProgressDialog();
                 currentUser = dataSnapshot.getValue(User.class);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                hideProgressDialog();
             }
         });
     }
@@ -105,7 +112,7 @@ public class TransactionActivity extends AppCompatActivity {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e(TAG,"Snapshot = " + dataSnapshot);
+                //Log.e(TAG,"Snapshot = " + dataSnapshot);
                 Log.e(TAG,"Value = " + dataSnapshot.getValue());
 
                 if(dataSnapshot.getValue() == null){
@@ -114,9 +121,17 @@ public class TransactionActivity extends AppCompatActivity {
                 }
                 else{
                     hideProgressDialog();
-                    Log.e(TAG,"User exists");
-                    destUser = dataSnapshot.getValue(User.class);
-                    doTransaction(destUser);
+                    HashMap map = (HashMap) dataSnapshot.getValue();
+                    for ( Object key : map.keySet() ) {
+                        hashKey = (String) key;
+                    }
+                    //Log.e(TAG,"Map" + map);
+                    Log.e(TAG,"key" + map.keySet());
+                    HashMap map2 = (HashMap) map.get(hashKey);
+                    long destAmount = (long) map2.get("balance");
+                    //destUser = dataSnapshot.getValue(User.class);
+                    Log.e(TAG,"Dest user balance = " + destAmount);
+                    doTransaction(hashKey,destAmount);
                 }
             }
 

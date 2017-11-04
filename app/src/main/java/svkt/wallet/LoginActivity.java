@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                User user=dataSnapshot.getValue(User.class);
+                User user = dataSnapshot.getValue(User.class);
                 Toast.makeText(LoginActivity.this,user.name,Toast.LENGTH_SHORT).show();
             }
 
