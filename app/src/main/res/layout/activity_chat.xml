@@ -7,6 +7,12 @@
     tools:context="svkt.wallet.ChatActivity"
     android:orientation="vertical">
 
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/requestEdit"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:hint="enter some text"/>
+    
     <Button
         android:id="@+id/listenButton"
         android:layout_width="match_parent"

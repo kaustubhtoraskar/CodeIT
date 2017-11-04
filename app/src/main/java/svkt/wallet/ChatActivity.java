@@ -1,16 +1,14 @@
 package svkt.wallet;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.google.gson.JsonElement;
-
-import java.util.Map;
 
 import ai.api.AIDataService;
 import ai.api.AIListener;
@@ -28,21 +26,26 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
     private static final String CLIENT_ACCESS_TOKEN = "03ceb8109b9a4e99b6eda56dec586c40";
     private Button listenButton;
     private TextView resultTextView;
+    private TextInputEditText requestEdit;
     private AIService aiService;
     private AIConfiguration configuration;
+    private AIDataService dataService;
+    private AIRequest aiRequest;
+    private String request;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        listenButton = (Button) findViewById(R.id.listenButton);
-        resultTextView = (TextView) findViewById(R.id.resultTextView);
+        listenButton = findViewById(R.id.listenButton);
+        resultTextView = findViewById(R.id.resultTextView);
+        requestEdit = findViewById(R.id.requestEdit);
 
         configuration = new AIConfiguration(CLIENT_ACCESS_TOKEN,AIConfiguration.SupportedLanguages.English, AIConfiguration.RecognitionEngine.System);
-        final AIDataService dataService = new AIDataService(configuration);
-        final AIRequest aiRequest = new AIRequest();
-        aiRequest.setQuery("Tell me my balance");
+        dataService = new AIDataService(configuration);
+        aiRequest = new AIRequest();
 
         aiService = AIService.getService(ChatActivity.this,configuration);
         aiService.setListener(ChatActivity.this);
@@ -51,27 +54,9 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
             @Override
             public void onClick(View view) {
 //                aiService.startListening();
-                new AsyncTask<AIRequest,Void,AIResponse>(){
-
-                    @Override
-                    protected AIResponse doInBackground(AIRequest... aiRequests) {
-                        AIRequest request = aiRequests[0];
-                        try{
-                            return dataService.request(request);
-                        }
-                        catch (AIServiceException ignored){
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(AIResponse aiResponse) {
-                        if(aiResponse != null){
-                            Log.e(TAG,"Task Response = " + aiResponse);
-                            onResult(aiResponse);
-                        }
-                    }
-                }.execute(aiRequest);
+                request = requestEdit.getText().toString();
+                aiRequest.setQuery(request);
+                new RequestAPIAI().execute(aiRequest);
             }
         });
     }
@@ -82,16 +67,16 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
 
         Result result = response.getResult();
 
-        String parameterString = "";
+        /*String parameterString = "";
         if(result.getParameters()!=null && result.getParameters().isEmpty()){
             for(Map.Entry<String, JsonElement> element : result.getParameters().entrySet()){
                 parameterString += "(" + element.getKey() + ", " + element.getValue() + ")";
             }
-        }
+        }*/
 
         resultTextView.setText("Query: " + result.getResolvedQuery() +
-                "\nAction: " + result.getAction() +
-                "\nParameter: " + parameterString);
+                "\nAction: " + result.getAction() /*+
+                "\nParameter: " + parameterString*/);
     }
 
     @Override
@@ -118,5 +103,49 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
     @Override
     public void onListeningFinished() {
         Log.e(TAG,"OnListeningFinished");
+    }
+
+    public void showProgressDialog()
+    {
+        progressDialog=new ProgressDialog(ChatActivity.this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading Wallet...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+    }
+
+    public void hideProgressDialog()
+    {
+        progressDialog.dismiss();
+    }
+
+
+    private class RequestAPIAI extends AsyncTask<AIRequest,Void,AIResponse>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog();
+        }
+
+        @Override
+        protected AIResponse doInBackground(AIRequest... aiRequests) {
+            AIRequest request = aiRequests[0];
+            try{
+                return dataService.request(request);
+            }
+            catch (AIServiceException ignored){
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(AIResponse aiResponse) {
+            hideProgressDialog();
+            if(aiResponse != null){
+                Log.e(TAG,"Task Response = " + aiResponse);
+                onResult(aiResponse);
+            }
+        }
     }
 }
