@@ -28,10 +28,11 @@ import svkt.wallet.models.Transaction;
 public class AllFragment extends Fragment {
 
     private static final String TAG = "AllFragment";
-    RecyclerView allTransactions;
-    DatabaseReference dbRef ;
-    FirebaseUser user;
-    ArrayList<Transaction> transactionList;
+    private RecyclerView recyclerView;
+    private DatabaseReference dbRef ;
+    private FirebaseUser user;
+    private ArrayList<Transaction> transactionList;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,13 +44,13 @@ public class AllFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        allTransactions = view.findViewById(R.id.allTransactions);
+        recyclerView = view.findViewById(R.id.allTransactions);
 
         transactionList = new ArrayList<>();
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
-        allTransactions.setLayoutManager(manager);
-        allTransactions.setAdapter(new TransactionListAdapter(getActivity(),transactionList));
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(new TransactionListAdapter(getActivity(),transactionList));
 
         updateList();
     }
@@ -65,7 +66,7 @@ public class AllFragment extends Fragment {
                 Transaction transaction = dataSnapshot.getValue(Transaction.class);
                 Log.e(TAG,"Transaction from = " + transaction.from);
                 transactionList.add(transaction);
-                allTransactions.setAdapter(new TransactionListAdapter(getActivity(),transactionList));
+                recyclerView.setAdapter(new TransactionListAdapter(getActivity(),transactionList));
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {

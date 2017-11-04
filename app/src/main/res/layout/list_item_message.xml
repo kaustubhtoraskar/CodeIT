@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     android:background="@drawable/textviewstyle">
 
     <TextView
@@ -11,8 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:background="@drawable/textviewstyle"
-
-        />
+        android:background="@drawable/textviewstyle" />
 
 </android.support.v7.widget.LinearLayoutCompat>

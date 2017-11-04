@@ -99,8 +99,8 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                 showBalance();
                 break;
             case "transferFunds":
-                doTranscation();
-                //showPassBook();
+                //doTranscation();
+                showPassBook();
                 break;
             case "passParams":
                 break;
