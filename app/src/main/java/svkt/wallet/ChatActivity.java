@@ -89,8 +89,8 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
 
     @Override
     public void onResult(AIResponse response) {
-        Log.e(TAG,"OnResult = " + response);
         Result result = response.getResult();
+        Log.e(TAG,"OnResult = " + response + " Result parameter = " + result.getParameters());
 
         switch (result.getAction()){
             case "checkBalance":
