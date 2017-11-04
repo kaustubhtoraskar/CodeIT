@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,7 +39,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
 
     private static final String TAG = "ChatActivity";
     private static final String CLIENT_ACCESS_TOKEN = "03ceb8109b9a4e99b6eda56dec586c40";
-    private Button listenButton;
+    private ImageButton listenButton;
     private TextInputEditText requestEdit;
     private AIService aiService;
     private AIConfiguration configuration;

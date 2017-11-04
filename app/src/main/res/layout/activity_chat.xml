@@ -14,7 +14,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginBottom="7dp"
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_alignParentBottom="true"
@@ -22,15 +23,20 @@
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/requestEdit"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_weight="0.78"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:textSize="20sp"
-                android:hint="enter some text"/>
+                android:hint="Type Message"
+                android:background="@drawable/textviewstyle"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/listenButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:text="Button"/>
+                android:background="@drawable/btnstyle"
+                android:src="@drawable/ic_send_white_24dp"
+                />
         </LinearLayout>
 </RelativeLayout>
