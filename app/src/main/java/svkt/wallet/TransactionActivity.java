@@ -93,15 +93,16 @@ public class TransactionActivity extends AppCompatActivity {
         DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Calendar calobj = Calendar.getInstance();
         String date = df.format(calobj.getTime());
-        Transaction transaction = new Transaction(hashKey,fUser.getUid(),amount,date);
+        Transaction destTransaction = new Transaction(hashKey,fUser.getUid(),amount,date,"received");
+        Transaction srcTransaction = new Transaction(hashKey,fUser.getUid(),amount,date,"paid");
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
         reference.child(hashKey).child("balance").setValue(destAmount);
         reference.child(fUser.getUid()).child("balance").setValue(currentUser.balance);
 
         DatabaseReference transRefer = FirebaseDatabase.getInstance().getReference().child("transaction");
-        transRefer.child(fUser.getUid()).push().setValue(transaction);
-        transRefer.child(hashKey).push().setValue(transaction);
+        transRefer.child(fUser.getUid()).push().setValue(srcTransaction);
+        transRefer.child(hashKey).push().setValue(destTransaction);
     }
 
     private void getSelfUser(){

@@ -9,14 +9,16 @@ public class Transaction {
     public String from;
     public String amount;
     public String date;
+    public String  type;
 
     public Transaction(){
     }
 
-    public Transaction(String to,String from,String amount,String date){
+    public Transaction(String to,String from,String amount,String date, String type){
         this.to = to;
         this.from = from;
         this.amount = amount;
         this.date = date;
+        this.type = type;
     }
 }

@@ -44,7 +44,7 @@ public class RequestMessageAdapter extends RecyclerView.Adapter<RequestMessageAd
         TextView messageView;
         public ViewHolder(View itemView) {
             super(itemView);
-            messageView = itemView.findViewById(R.id.messageTextView);
+//            messageView = itemView.findViewById(R.id.messageTextView);
         }
     }
 }
