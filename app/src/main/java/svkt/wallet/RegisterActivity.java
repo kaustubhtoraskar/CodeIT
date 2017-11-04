@@ -134,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void writeNewUser(String userId) {
-        User user = new User(name,email,contactNo,cardNo,expiryDate);
+        User user = new User(name,email,contactNo,cardNo,expiryDate,0);
         databaseReference.child("users").child(userId).setValue(user);
     }
 }

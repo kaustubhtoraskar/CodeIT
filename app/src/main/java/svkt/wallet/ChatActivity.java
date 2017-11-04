@@ -5,10 +5,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import ai.api.AIDataService;
 import ai.api.AIListener;
@@ -19,13 +30,14 @@ import ai.api.model.AIError;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
+import svkt.wallet.adapter.RequestMessageAdapter;
+import svkt.wallet.models.User;
 
 public class ChatActivity extends AppCompatActivity implements AIListener{
 
     private static final String TAG = "ChatActivity";
     private static final String CLIENT_ACCESS_TOKEN = "03ceb8109b9a4e99b6eda56dec586c40";
     private Button listenButton;
-    private TextView resultTextView;
     private TextInputEditText requestEdit;
     private AIService aiService;
     private AIConfiguration configuration;
@@ -33,6 +45,10 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
     private AIRequest aiRequest;
     private String request;
     private ProgressDialog progressDialog;
+    private RecyclerView recyclerView;
+    private ArrayList<String> messageList;
+    private FirebaseUser firebaseUser;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +56,14 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         setContentView(R.layout.activity_chat);
 
         listenButton = findViewById(R.id.listenButton);
-        resultTextView = findViewById(R.id.resultTextView);
         requestEdit = findViewById(R.id.requestEdit);
+        recyclerView = findViewById(R.id.recyclerView);
+
+        messageList = new ArrayList<String>();
+        LinearLayoutManager manager = new LinearLayoutManager(ChatActivity.this);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
 
         configuration = new AIConfiguration(CLIENT_ACCESS_TOKEN,AIConfiguration.SupportedLanguages.English, AIConfiguration.RecognitionEngine.System);
         dataService = new AIDataService(configuration);
@@ -55,6 +77,9 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
             public void onClick(View view) {
 //                aiService.startListening();
                 request = requestEdit.getText().toString();
+                messageList.add(request);
+                recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
+                requestEdit.setText("");
                 aiRequest.setQuery(request);
                 new RequestAPIAI().execute(aiRequest);
             }
@@ -64,25 +89,46 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
     @Override
     public void onResult(AIResponse response) {
         Log.e(TAG,"OnResult = " + response);
-
         Result result = response.getResult();
 
-        /*String parameterString = "";
-        if(result.getParameters()!=null && result.getParameters().isEmpty()){
-            for(Map.Entry<String, JsonElement> element : result.getParameters().entrySet()){
-                parameterString += "(" + element.getKey() + ", " + element.getValue() + ")";
-            }
-        }*/
+        switch (result.getAction()){
+            case "checkBalance":
+                showProgressDialog("Retriving your balance...");
+                showBalance();
+                break;
+            case "transferFunds":
+                doTranscation();
+                break;
+        }
+    }
 
-        resultTextView.setText("Query: " + result.getResolvedQuery() +
-                "\nAction: " + result.getAction() /*+
-                "\nParameter: " + parameterString*/);
+    private void showBalance(){
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                hideProgressDialog();
+                User user = dataSnapshot.getValue(User.class);
+                messageList.add("Your current balance is " + user.balance);
+                recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                hideProgressDialog();
+            }
+        });
+    }
+
+    private void doTranscation(){
+        messageList.add("Do some transcation");
+        recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
     }
 
     @Override
     public void onError(AIError error) {
         Log.e(TAG,"OnError = " + error);
-        resultTextView.setText(error.toString());
     }
 
     @Override
@@ -105,11 +151,11 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         Log.e(TAG,"OnListeningFinished");
     }
 
-    public void showProgressDialog()
+    public void showProgressDialog(String message)
     {
         progressDialog=new ProgressDialog(ChatActivity.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading Wallet...");
+        progressDialog.setMessage(message);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
     }
@@ -125,7 +171,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showProgressDialog();
+            showProgressDialog("Please wait for a moment...");
         }
 
         @Override
