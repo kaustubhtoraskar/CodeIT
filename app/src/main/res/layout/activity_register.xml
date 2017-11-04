@@ -23,16 +23,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.075"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1">
+        tools:layout_constraintRight_creator="1"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="10dp">
+            android:padding="20dp"
+            android:layout_marginTop="30dp"
+            >
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/name"
                 android:layout_width="300dp"
                 android:layout_height="52dp"
@@ -43,7 +46,7 @@
                 tools:layout_editor_absoluteY="36dp"
                 android:layout_marginBottom="20dp"/>
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/email"
                 android:layout_width="300dp"
                 android:layout_height="52dp"
@@ -54,7 +57,7 @@
                 tools:layout_editor_absoluteY="117dp"
                 android:layout_marginBottom="20dp"/>
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/contactno"
                 android:layout_width="300dp"
                 android:layout_height="52dp"
@@ -63,7 +66,7 @@
                 android:inputType="phone"
                 android:layout_marginBottom="20dp"/>
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/password"
                 android:layout_width="300dp"
                 android:layout_height="52dp"
@@ -72,7 +75,7 @@
                 android:inputType="textPassword"
                 android:layout_marginBottom="20dp"/>
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/editText17"
                 android:layout_width="300dp"
                 android:layout_height="52dp"
@@ -81,7 +84,7 @@
                 android:inputType="textPassword"
                 android:layout_marginBottom="20dp"/>
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/cardno"
                 android:layout_width="300dp"
                 android:layout_height="52dp"
@@ -92,13 +95,14 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="150dp"
-                android:layout_height="29dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:text="@string/enterExpDate"
                 android:textSize="18dp"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginTop="20dp"/>
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/expiryDate"
                 android:layout_width="300dp"
                 android:layout_height="52dp"
@@ -107,7 +111,7 @@
                 android:layout_marginBottom="20dp"/>
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/registerBtn"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btnstyle"
@@ -116,9 +120,6 @@
                 tools:layout_editor_absoluteX="93dp"
                 tools:layout_editor_absoluteY="884dp"
                 android:layout_marginBottom="20dp"/>
-
-
-
 
         </LinearLayout>
 
