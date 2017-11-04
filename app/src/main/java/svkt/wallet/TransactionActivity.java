@@ -19,8 +19,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 
+import svkt.wallet.models.Transaction;
 import svkt.wallet.models.User;
 
 public class TransactionActivity extends AppCompatActivity {
@@ -86,9 +90,18 @@ public class TransactionActivity extends AppCompatActivity {
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         currentUser.balance -= Long.parseLong(amount);
 
+        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Calendar calobj = Calendar.getInstance();
+        String date = df.format(calobj.getTime());
+        Transaction transaction = new Transaction(hashKey,fUser.getUid(),amount,date);
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
         reference.child(hashKey).child("balance").setValue(destAmount);
         reference.child(fUser.getUid()).child("balance").setValue(currentUser.balance);
+
+        DatabaseReference transRefer = FirebaseDatabase.getInstance().getReference().child("transaction");
+        transRefer.child(fUser.getUid()).push().setValue(transaction);
+        transRefer.child(hashKey).push().setValue(transaction);
     }
 
     private void getSelfUser(){
