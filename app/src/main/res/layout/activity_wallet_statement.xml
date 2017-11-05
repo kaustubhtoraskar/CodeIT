@@ -53,7 +53,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CardNo"
+        android:text="Your Card Number is"
         android:textSize="25sp"
         android:layout_marginBottom="30dp"
         android:layout_marginTop="10dp"
