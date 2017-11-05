@@ -75,15 +75,20 @@ public class PassbookActivity extends AppCompatActivity {
         switch (id)
         {
             case R.id.action_chat:
-            {
+
                 startActivity(new Intent(PassbookActivity.this,ChatActivity.class));
                 break;
-            }
+
             case R.id.action_passbook :
-            {
+
                 startActivity(new Intent(PassbookActivity.this,PassbookActivity.class));
                 break;
-            }
+
+            case R.id.action_statement :
+
+                startActivity(new Intent(PassbookActivity.this,WalletStatement.class));
+                break;
+
         }
 
         return super.onOptionsItemSelected(item);

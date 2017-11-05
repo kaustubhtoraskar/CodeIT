@@ -2,10 +2,13 @@ package svkt.wallet.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,6 +42,7 @@ import ai.api.model.AIError;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
+import svkt.wallet.Manifest;
 import svkt.wallet.R;
 import svkt.wallet.adapter.RequestMessageAdapter;
 import svkt.wallet.models.Message;
@@ -64,6 +68,8 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
@@ -84,6 +90,8 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
 
         aiService = AIService.getService(ChatActivity.this,configuration);
         aiService.setListener(ChatActivity.this);
+
+
 
         requestEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -321,15 +329,19 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         switch (id)
         {
             case R.id.action_chat:
-            {
+
                 startActivity(new Intent(ChatActivity.this,ChatActivity.class));
                 break;
-            }
+
             case R.id.action_passbook :
-            {
+
                 startActivity(new Intent(ChatActivity.this,PassbookActivity.class));
                 break;
-            }
+
+            case R.id.action_statement :
+
+                startActivity(new Intent(ChatActivity.this,WalletStatement.class));
+                break;
         }
 
         return super.onOptionsItemSelected(item);
