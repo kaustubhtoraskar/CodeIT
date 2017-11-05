@@ -102,8 +102,8 @@ public class ReceivedFragment extends Fragment {
             Transaction transaction = transactionList.get(i);
             if(transaction.amount.equals(query) || transaction.amount.toLowerCase().contains(lowerCaseQuery)
                     || transaction.date.toLowerCase().equals(lowerCaseQuery) || transaction.date.toLowerCase().contains(lowerCaseQuery)
-                    || transaction.from.toLowerCase().equals(lowerCaseQuery) || transaction.from.toLowerCase().contains(lowerCaseQuery)
-                    || transaction.to.toLowerCase().equals(lowerCaseQuery) || transaction.to.toLowerCase().contains(lowerCaseQuery)) {
+                    || transaction.fromName.toLowerCase().equals(lowerCaseQuery) || transaction.fromName.toLowerCase().contains(lowerCaseQuery)
+                    || transaction.toName.toLowerCase().equals(lowerCaseQuery) || transaction.toName.toLowerCase().contains(lowerCaseQuery)) {
                 Log.e(TAG,"Amount = " + transaction.amount);
                 searchResult.add(transaction);
             }

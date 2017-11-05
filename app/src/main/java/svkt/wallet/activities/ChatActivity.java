@@ -157,7 +157,9 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                 break;
             case "transferFunds":
                 doTranscation();
-                //showPassBook();
+                Message message = new Message("received",result.getFulfillment().getSpeech());
+                messageList.add(message);
+                recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
                 break;
             case "passParams":
                 HashMap<String, JsonElement> map = result.getParameters();
@@ -172,20 +174,29 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                     intent.putExtra("AMOUNT",params.get(1));
                     startActivity(intent);
                 }
+                Message message1 = new Message("received",result.getFulfillment().getSpeech());
+                messageList.add(message1);
+                recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
                 break;
 
             case "getWalletStatement":
                 startActivity(new Intent(ChatActivity.this , WalletStatement.class));
+                Message message2 = new Message("received",result.getFulfillment().getSpeech());
+                messageList.add(message2);
+                recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
                 break;
             case "passToPassbook":
                 HashMap<String, JsonElement> passMap = result.getParameters();
                 Log.e(TAG,"passMap = " + passMap);
                 showPassBook();
+                Message message3 = new Message("received",result.getFulfillment().getSpeech());
+                messageList.add(message3);
+                recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
                 break;
             default:
                 Log.e(TAG,"Response = " + result.getFulfillment().getSpeech());
-                Message message = new Message("received",result.getFulfillment().getSpeech());
-                messageList.add(message);
+                Message message4 = new Message("received",result.getFulfillment().getSpeech());
+                messageList.add(message4);
                 recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
                 break;
         }
