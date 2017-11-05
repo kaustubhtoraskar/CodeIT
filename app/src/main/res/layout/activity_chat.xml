@@ -33,12 +33,18 @@
                 android:textSize="20sp"
                 android:hint="Type Message"
                 android:background="@drawable/textviewstyle"/>
-
+            <ImageButton
+                android:id="@+id/sendButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:visibility="gone"
+                android:background="@drawable/btnstyle"
+                android:src="@drawable/ic_send_white_24dp" />
             <ImageButton
                 android:id="@+id/listenButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/btnstyle"
-                android:src="@drawable/ic_send_white_24dp" />
+                android:src="@drawable/ic_mic_white_24dp" />
         </LinearLayout>
 </LinearLayout>

@@ -100,29 +100,11 @@ public class ReceivedFragment extends Fragment {
 
         for(int i = 0; i < transactionList.size(); i++){
             Transaction transaction = transactionList.get(i);
-            if(transaction.amount.equals(query) || transaction.amount.toLowerCase().contains(lowerCaseQuery)) {
+            if(transaction.amount.equals(query) || transaction.amount.toLowerCase().contains(lowerCaseQuery)
+                    || transaction.date.toLowerCase().equals(lowerCaseQuery) || transaction.date.toLowerCase().contains(lowerCaseQuery)
+                    || transaction.from.toLowerCase().equals(lowerCaseQuery) || transaction.from.toLowerCase().contains(lowerCaseQuery)
+                    || transaction.to.toLowerCase().equals(lowerCaseQuery) || transaction.to.toLowerCase().contains(lowerCaseQuery)) {
                 Log.e(TAG,"Amount = " + transaction.amount);
-                searchResult.add(transaction);
-            }
-        }
-
-        for(int i = 0; i < transactionList.size(); i++){
-            Transaction transaction = transactionList.get(i);
-            if(transaction.date.toLowerCase().equals(lowerCaseQuery) || transaction.date.toLowerCase().contains(lowerCaseQuery)) {
-                searchResult.add(transaction);
-            }
-        }
-
-        for(int i = 0; i < transactionList.size(); i++){
-            Transaction transaction = transactionList.get(i);
-            if(transaction.from.toLowerCase().equals(lowerCaseQuery) || transaction.from.toLowerCase().contains(lowerCaseQuery)) {
-                searchResult.add(transaction);
-            }
-        }
-
-        for(int i = 0; i < transactionList.size(); i++){
-            Transaction transaction = transactionList.get(i);
-            if(transaction.to.toLowerCase().equals(lowerCaseQuery) || transaction.to.toLowerCase().contains(lowerCaseQuery)) {
                 searchResult.add(transaction);
             }
         }

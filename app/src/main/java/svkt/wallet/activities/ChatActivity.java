@@ -9,6 +9,8 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,7 +48,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
 
     private static final String TAG = "ChatActivity";
     private static final String CLIENT_ACCESS_TOKEN = "03ceb8109b9a4e99b6eda56dec586c40";
-    private ImageButton listenButton;
+    private ImageButton listenButton,sendButton;
     private TextInputEditText requestEdit;
     private AIService aiService;
     private AIConfiguration configuration;
@@ -56,6 +58,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
     private ProgressDialog progressDialog;
     private RecyclerView recyclerView;
     private ArrayList<Message> messageList;
+    private boolean isListenQuery = false;
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
 
@@ -65,6 +68,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         setContentView(R.layout.activity_chat);
 
         listenButton = findViewById(R.id.listenButton);
+        sendButton = findViewById(R.id.sendButton);
         requestEdit = findViewById(R.id.requestEdit);
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -81,10 +85,33 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         aiService = AIService.getService(ChatActivity.this,configuration);
         aiService.setListener(ChatActivity.this);
 
-        listenButton.setOnClickListener(new View.OnClickListener() {
+        requestEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                listenButton.setVisibility(View.VISIBLE);
+                sendButton.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length() > 0) {
+                    listenButton.setVisibility(View.GONE);
+                    sendButton.setVisibility(View.VISIBLE);
+                }
+                else{
+                    listenButton.setVisibility(View.VISIBLE);
+                    sendButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//              aiService.startListening();
                 request = requestEdit.getText().toString();
                 Message message = new Message("sent",request);
                 messageList.add(message);
@@ -94,15 +121,28 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                 new RequestAPIAI().execute(aiRequest);
             }
         });
+
+        listenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                aiService.startListening();
+            }
+        });
     }
 
     @Override
     public void onResult(AIResponse response) {
         Result result = response.getResult();
         Log.e(TAG,"OnResult = " + response + " Result parameter = " + result.getParameters());
-        Log.e(TAG,"Message = " + result.getFulfillment().getMessages());
-        Log.e(TAG,"Speech = " + result.getFulfillment().getSpeech());
-        Log.e(TAG,"Fullfillment = " + result.getFulfillment());
+//        Log.e(TAG,"Message = " + result.getFulfillment().getMessages());
+//        Log.e(TAG,"Speech = " + result.getFulfillment().getSpeech());
+//        Log.e(TAG,"Fullfillment = " + result.getFulfillment());
+        if(isListenQuery){
+            Message message = new Message("sent",result.getResolvedQuery());
+            messageList.add(message);
+            recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
+            isListenQuery = false;
+        }
 
         switch (result.getAction()){
             case "checkBalance":
@@ -201,6 +241,8 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
     @Override
     public void onListeningStarted() {
         Log.e(TAG,"OnListeningStarted");
+        showProgressDialog("Listening started...");
+        isListenQuery = true;
     }
 
     @Override
@@ -211,6 +253,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
     @Override
     public void onListeningFinished() {
         Log.e(TAG,"OnListeningFinished");
+        hideProgressDialog();
     }
 
     public void showProgressDialog(String message)
