@@ -29,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.JsonElement;
 
@@ -169,12 +170,12 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                     Log.e(TAG,"Key = " + key);
                     params.add(String.valueOf(map.get(key)));
                 }
+                Intent intent = new Intent(ChatActivity.this,TransactionActivity.class);
                 if(params.size() == 2){
-                    Intent intent = new Intent(ChatActivity.this,TransactionActivity.class);
                     intent.putExtra("PHONE_NO",params.get(0));
                     intent.putExtra("AMOUNT",params.get(1));
-                    startActivity(intent);
                 }
+                startActivity(intent);
                 Message message1 = new Message("received",result.getFulfillment().getSpeech());
                 messageList.add(message1);
                 recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
@@ -189,7 +190,12 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
             case "passToPassbook":
                 HashMap<String, JsonElement> passMap = result.getParameters();
                 Log.e(TAG,"passMap = " + passMap);
-                showPassBook();
+                String query = "";
+                for(String key : passMap.keySet()){
+                    Log.e(TAG,"Key = " + key);
+                    query = String.valueOf(passMap.get(key));
+                }
+                showPassBook(query);
                 Message message3 = new Message("received",result.getFulfillment().getSpeech());
                 messageList.add(message3);
                 recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
@@ -248,8 +254,30 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         startActivity(new Intent(ChatActivity.this,TransactionActivity.class));
     }
 
-    private void showPassBook(){
-        startActivity(new Intent(ChatActivity.this,PassbookActivity.class));
+    private void showPassBook(String request){
+        FirebaseUser cureUser = FirebaseAuth.getInstance().getCurrentUser();
+        Query query = FirebaseDatabase.getInstance().getReference().child("transaction").child(cureUser.getUid())
+                .orderByChild("date").equalTo(request);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e(TAG,"DataSnapShot = " + dataSnapshot);
+                if(dataSnapshot.getValue() != null) {
+                    Transaction transaction = dataSnapshot.getValue(Transaction.class);
+                    Message message4 = new Message("received", transaction.fromName + " " + transaction.amount);
+                    messageList.add(message4);
+                    recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this, messageList));
+                }
+                else{
+                    startActivity(new Intent(ChatActivity.this,PassbookActivity.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

@@ -166,7 +166,8 @@ public class RegisterActivity extends AppCompatActivity {
         FirebaseUser fuser = firebaseAuth.getCurrentUser();
         if (fuser != null){
             Log.e(TAG, "UserId = " + fuser.getUid());
-            User user = new User(name,email,contactNo,cardNo,expiryDate,0);
+            User user = new User(name,email,contactNo,cardNo,expiryDate,5000);
+            Toast.makeText(RegisterActivity.this,"You have been initially credited with Rs 5000",Toast.LENGTH_SHORT).show();
             databaseReference.child("users").child(fuser.getUid()).setValue(user);
         }
         else
