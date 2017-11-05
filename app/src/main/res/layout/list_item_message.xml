@@ -15,7 +15,7 @@
         android:textColor="@color/lightText"
         android:layout_marginBottom="5dp"
         android:textSize="20sp"
-        android:autoLink="all"
+        android:autoLink="web"
         android:layout_marginTop="5dp" />
 
     <TextView
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:autoLink="all"
+        android:autoLink="web"
         android:background="@drawable/textviewstyle"
         android:layout_marginRight="100dp"
         android:layout_marginBottom="5dp"

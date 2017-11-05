@@ -1,0 +1,273 @@
+Index: app/src/main/res/menu/menu_passbook.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/menu_passbook.xml	(revision 59f2de87443cee8cb5dd5a77f2b7897d3aa55c81)
++++ app/src/main/res/menu/menu_passbook.xml	(revision )
+@@ -18,8 +18,14 @@
+         android:title="@string/statement"
+         app:showAsAction="never" />
+     <item
++        android:id="@+id/action_transfer"
++        android:orderInCategory="100"
++        android:title="@string/transferFunds"
++        app:showAsAction="never" />
++    <item
+         android:id="@+id/action_logout"
+         android:orderInCategory="100"
+         android:title="@string/logout"
+         app:showAsAction="never" />
++
+ </menu>
+Index: app/src/main/res/menu/menu_statement.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/menu_statement.xml	(revision 59f2de87443cee8cb5dd5a77f2b7897d3aa55c81)
++++ app/src/main/res/menu/menu_statement.xml	(revision )
+@@ -18,6 +18,11 @@
+         android:title="@string/statement"
+         app:showAsAction="never" />
+     <item
++        android:id="@+id/action_transfer"
++        android:orderInCategory="100"
++        android:title="@string/transferFunds"
++        app:showAsAction="never" />
++    <item
+         android:id="@+id/action_logout"
+         android:orderInCategory="100"
+         android:title="@string/logout"
+Index: app/src/main/java/svkt/wallet/activities/ChatActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/svkt/wallet/activities/ChatActivity.java	(revision 59f2de87443cee8cb5dd5a77f2b7897d3aa55c81)
++++ app/src/main/java/svkt/wallet/activities/ChatActivity.java	(revision )
+@@ -47,6 +47,7 @@
+ import svkt.wallet.R;
+ import svkt.wallet.adapter.RequestMessageAdapter;
+ import svkt.wallet.models.Message;
++import svkt.wallet.models.Transaction;
+ import svkt.wallet.models.User;
+ 
+ public class ChatActivity extends AppCompatActivity implements AIListener{
+@@ -193,6 +194,7 @@
+                 messageList.add(message3);
+                 recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
+                 break;
++
+             default:
+                 Log.e(TAG,"Response = " + result.getFulfillment().getSpeech());
+                 Message message4 = new Message("received",result.getFulfillment().getSpeech());
+@@ -356,6 +358,11 @@
+             case R.id.action_logout :
+                 signOutDialog();
+                 break;
++
++            case R.id.action_transfer :
++                startActivity(new Intent(ChatActivity.this,TransactionActivity.class));
++                break;
++
+         }
+ 
+         return super.onOptionsItemSelected(item);
+Index: app/src/main/java/svkt/wallet/activities/TransactionActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/svkt/wallet/activities/TransactionActivity.java	(revision 59f2de87443cee8cb5dd5a77f2b7897d3aa55c81)
++++ app/src/main/java/svkt/wallet/activities/TransactionActivity.java	(revision )
+@@ -205,23 +205,25 @@
+         switch (id)
+         {
+             case R.id.action_chat:
+-
+                 startActivity(new Intent(TransactionActivity.this,ChatActivity.class));
+                 break;
+ 
+             case R.id.action_passbook :
+-
+                 startActivity(new Intent(TransactionActivity.this,PassbookActivity.class));
+                 break;
+ 
+             case R.id.action_statement :
+-
+                 startActivity(new Intent(TransactionActivity.this,WalletStatement.class));
+                 break;
+ 
+             case R.id.action_logout :
+                 signOutDialog();
+                 break;
++
++            case R.id.action_transfer :
++                startActivity(new Intent(TransactionActivity.this,TransactionActivity.class));
++                break;
++
+ 
+         }
+ 
+Index: app/src/main/res/menu/menu_transaction.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/menu_transaction.xml	(revision 59f2de87443cee8cb5dd5a77f2b7897d3aa55c81)
++++ app/src/main/res/menu/menu_transaction.xml	(revision )
+@@ -18,8 +18,14 @@
+         android:title="@string/statement"
+         app:showAsAction="never" />
+     <item
++        android:id="@+id/action_transfer"
++        android:orderInCategory="100"
++        android:title="@string/transferFunds"
++        app:showAsAction="never" />
++    <item
+         android:id="@+id/action_logout"
+         android:orderInCategory="100"
+         android:title="@string/logout"
+         app:showAsAction="never" />
++
+ </menu>
+Index: app/src/main/java/svkt/wallet/activities/PassbookActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/svkt/wallet/activities/PassbookActivity.java	(revision 59f2de87443cee8cb5dd5a77f2b7897d3aa55c81)
++++ app/src/main/java/svkt/wallet/activities/PassbookActivity.java	(revision )
+@@ -24,6 +24,7 @@
+ import svkt.wallet.fragments.AllFragment;
+ import svkt.wallet.fragments.PaidFragment;
+ import svkt.wallet.fragments.ReceivedFragment;
++import svkt.wallet.models.Transaction;
+ 
+ public class PassbookActivity extends AppCompatActivity {
+ 
+@@ -80,22 +81,23 @@
+         switch (id)
+         {
+             case R.id.action_chat:
+-
+                 startActivity(new Intent(PassbookActivity.this,ChatActivity.class));
+                 break;
+ 
+             case R.id.action_passbook :
+-
+                 startActivity(new Intent(PassbookActivity.this,PassbookActivity.class));
+                 break;
+ 
+             case R.id.action_statement :
+-
+                 startActivity(new Intent(PassbookActivity.this,WalletStatement.class));
+                 break;
+ 
+             case R.id.action_logout :
+                 signOutDialog();
++                break;
++
++            case R.id.action_transfer :
++                startActivity(new Intent(PassbookActivity.this,TransactionActivity.class));
+                 break;
+ 
+         }
+Index: app/src/main/res/menu/menu_chat.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/menu_chat.xml	(revision 59f2de87443cee8cb5dd5a77f2b7897d3aa55c81)
++++ app/src/main/res/menu/menu_chat.xml	(revision )
+@@ -18,8 +18,14 @@
+         android:title="@string/statement"
+         app:showAsAction="never" />
+     <item
++        android:id="@+id/action_transfer"
++        android:orderInCategory="100"
++        android:title="@string/transferFunds"
++        app:showAsAction="never" />
++    <item
+         android:id="@+id/action_logout"
+         android:orderInCategory="100"
+         android:title="@string/logout"
+         app:showAsAction="never" />
++
+ </menu>
+\ No newline at end of file
+Index: app/src/main/java/svkt/wallet/activities/WalletStatement.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/svkt/wallet/activities/WalletStatement.java	(revision 59f2de87443cee8cb5dd5a77f2b7897d3aa55c81)
++++ app/src/main/java/svkt/wallet/activities/WalletStatement.java	(revision )
+@@ -22,6 +22,7 @@
+ import com.google.firebase.database.ValueEventListener;
+ 
+ import svkt.wallet.R;
++import svkt.wallet.models.Transaction;
+ import svkt.wallet.models.User;
+ 
+ public class WalletStatement extends AppCompatActivity {
+@@ -75,17 +76,14 @@
+         switch (id)
+         {
+             case R.id.action_chat:
+-
+                 startActivity(new Intent(WalletStatement.this,ChatActivity.class));
+                 break;
+ 
+             case R.id.action_passbook :
+-
+                 startActivity(new Intent(WalletStatement.this,PassbookActivity.class));
+                 break;
+ 
+             case R.id.action_statement :
+-
+                 startActivity(new Intent(WalletStatement.this,WalletStatement.class));
+                 break;
+ 
+@@ -93,6 +91,9 @@
+                 signOutDialog();
+                 break;
+ 
++            case R.id.action_transfer :
++                startActivity(new Intent(WalletStatement.this,TransactionActivity.class));
++                break;
+         }
+ 
+         return super.onOptionsItemSelected(item);
+Index: app/src/main/res/layout/list_item_message.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/list_item_message.xml	(revision 59f2de87443cee8cb5dd5a77f2b7897d3aa55c81)
++++ app/src/main/res/layout/list_item_message.xml	(revision )
+@@ -13,10 +13,10 @@
+         android:background="@drawable/responsetextstyle"
+         android:layout_marginLeft="100dp"
+         android:textColor="@color/lightText"
+-        android:layout_marginBottom="10dp"
++        android:layout_marginBottom="5dp"
+         android:textSize="20sp"
+         android:autoLink="all"
+-        android:layout_marginTop="10dp" />
++        android:layout_marginTop="5dp" />
+ 
+     <TextView
+         android:id="@+id/responseTextView"
+@@ -26,7 +26,7 @@
+         android:autoLink="all"
+         android:background="@drawable/textviewstyle"
+         android:layout_marginRight="100dp"
+-        android:layout_marginBottom="10dp"
+-        android:layout_marginTop="10dp" />
++        android:layout_marginBottom="5dp"
++ />
+ 
+ </android.support.v7.widget.LinearLayoutCompat>
+\ No newline at end of file

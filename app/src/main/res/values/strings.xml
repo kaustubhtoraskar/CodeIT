@@ -15,7 +15,8 @@
     <string name="card_no_error">Please enter card no</string>
     <string name="expiry_date_error">Please card expiry date</string>
 
-    <string name="app_name">Kube\u20B9</string>
+    <string name="app_name">Team_43</string>
+    <string name="cust_app_name">Kube\u20B9</string>
     <string name="emailHint">Email</string>
     <string name="passwordHint">Password</string>
     <string name="loginBtn">LOG IN</string>
