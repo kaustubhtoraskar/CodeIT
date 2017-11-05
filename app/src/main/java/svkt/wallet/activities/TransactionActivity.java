@@ -101,7 +101,7 @@ public class TransactionActivity extends AppCompatActivity {
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         currentUser.balance -= Long.parseLong(amount);
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar calobj = Calendar.getInstance();
         String date = df.format(calobj.getTime());
         Transaction destTransaction = new Transaction(hashKey,fUser.getUid(),toName,currentUser.name,amount,date,"received");

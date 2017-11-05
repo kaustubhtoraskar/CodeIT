@@ -182,6 +182,8 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                 break;
 
             case "passToPassbook":
+                HashMap<String, JsonElement> passMap = result.getParameters();
+                Log.e(TAG,"passMap = " + passMap);
                 break;
             default:
                 Log.e(TAG,"Response = " + result.getFulfillment().getSpeech());
