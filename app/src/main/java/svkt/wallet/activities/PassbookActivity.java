@@ -89,6 +89,9 @@ public class PassbookActivity extends AppCompatActivity {
                 startActivity(new Intent(PassbookActivity.this,WalletStatement.class));
                 break;
 
+            case R.id.action_logout :
+                break;
+
         }
 
         return super.onOptionsItemSelected(item);

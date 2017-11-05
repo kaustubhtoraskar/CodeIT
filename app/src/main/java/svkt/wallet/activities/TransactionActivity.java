@@ -210,6 +210,9 @@ public class TransactionActivity extends AppCompatActivity {
                 startActivity(new Intent(TransactionActivity.this,WalletStatement.class));
                 break;
 
+            case R.id.action_logout :
+                break;
+
         }
 
         return super.onOptionsItemSelected(item);

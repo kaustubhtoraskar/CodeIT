@@ -4,6 +4,7 @@
     <string name="email_error">Please enter valid email</string>
     <string name="password_error">Please enter a password of minimum 8 characters</string>
     <string name="error">An error has encountered</string>
+    <string name="logout">Sign out</string>
 
     <!--RegisterActivity-->
     <string name="name_error">Please enter your name</string>

@@ -16,8 +16,8 @@
         <item>12</item>
     </string-array>
     <string-array name="year">
-        <itme>2017</itme>
-        <itme>2018</itme>
+        <item>2017</item>
+        <item>2018</item>
         <item>2019</item>
         <item>2020</item>
         <item>2021</item>

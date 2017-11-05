@@ -83,6 +83,9 @@ public class WalletStatement extends AppCompatActivity {
                 startActivity(new Intent(WalletStatement.this,WalletStatement.class));
                 break;
 
+            case R.id.action_logout :
+                break;
+
         }
 
         return super.onOptionsItemSelected(item);
