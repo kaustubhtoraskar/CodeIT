@@ -17,15 +17,16 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"/>
 
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="257dp"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_gravity="center">
 
             <TextView
                 android:id="@+id/transactionName"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
@@ -36,21 +37,22 @@
 
             <TextView
                 android:id="@+id/transactionDate"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
                 android:text="October 30th, 8:00pm"
                 android:textSize="16sp" />
 
-        </android.support.v7.widget.LinearLayoutCompat>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/amount"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="-4725 ₹"
+            android:text="@string/Rs"
             android:textSize="18sp"
             android:textStyle="bold" />
 

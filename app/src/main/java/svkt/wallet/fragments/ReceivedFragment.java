@@ -3,9 +3,13 @@ package svkt.wallet.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +38,9 @@ public class ReceivedFragment extends Fragment {
     private RecyclerView recyclerView;
     private DatabaseReference dbRef ;
     private FirebaseUser user;
-    private ArrayList<Transaction> transactionList;
+    private TextInputEditText searchBar;
+    private ArrayList<Transaction> transactionList,searchResult;
+    private TransactionListAdapter transactionListAdapter;
 
     public ReceivedFragment() {
         // Required empty public constructor
@@ -53,14 +59,73 @@ public class ReceivedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = view.findViewById(R.id.recyclerView);
+        searchBar = view.findViewById(R.id.searchBar);
 
         transactionList = new ArrayList<>();
+        searchResult = new ArrayList<>();
+
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(new TransactionListAdapter(getActivity(),transactionList));
+        transactionListAdapter = new TransactionListAdapter(getActivity(),transactionList);
+        recyclerView.setAdapter(transactionListAdapter);
+
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                searchResult.clear();
+                transactionListAdapter = new TransactionListAdapter(getActivity(),transactionList);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.e(TAG,"Query = " + charSequence);
+                doSearch(charSequence.toString());
+                transactionListAdapter = new TransactionListAdapter(getActivity(),searchResult);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                recyclerView.setAdapter(transactionListAdapter);
+            }
+        });
 
         updateList();
+    }
+
+    private void doSearch(String query){
+        searchResult.clear();
+
+        String lowerCaseQuery = query.toLowerCase();
+
+        for(int i = 0; i < transactionList.size(); i++){
+            Transaction transaction = transactionList.get(i);
+            if(transaction.amount.equals(query) || transaction.amount.toLowerCase().contains(lowerCaseQuery)) {
+                Log.e(TAG,"Amount = " + transaction.amount);
+                searchResult.add(transaction);
+            }
+        }
+
+        for(int i = 0; i < transactionList.size(); i++){
+            Transaction transaction = transactionList.get(i);
+            if(transaction.date.toLowerCase().equals(lowerCaseQuery) || transaction.date.toLowerCase().contains(lowerCaseQuery)) {
+                searchResult.add(transaction);
+            }
+        }
+
+        for(int i = 0; i < transactionList.size(); i++){
+            Transaction transaction = transactionList.get(i);
+            if(transaction.from.toLowerCase().equals(lowerCaseQuery) || transaction.from.toLowerCase().contains(lowerCaseQuery)) {
+                searchResult.add(transaction);
+            }
+        }
+
+        for(int i = 0; i < transactionList.size(); i++){
+            Transaction transaction = transactionList.get(i);
+            if(transaction.to.toLowerCase().equals(lowerCaseQuery) || transaction.to.toLowerCase().contains(lowerCaseQuery)) {
+                searchResult.add(transaction);
+            }
+        }
     }
 
     private void updateList(){
@@ -74,7 +139,7 @@ public class ReceivedFragment extends Fragment {
                 Transaction transaction = dataSnapshot.getValue(Transaction.class);
                 if(transaction.type.equals("received")) {
                     transactionList.add(transaction);
-                    recyclerView.setAdapter(new TransactionListAdapter(getActivity(), transactionList));
+                    recyclerView.setAdapter(transactionListAdapter);
                 }
             }
             @Override

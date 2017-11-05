@@ -59,8 +59,8 @@ public class TransactionActivity extends AppCompatActivity {
         if(bundle != null){
             String phoneNo = bundle.getString("PHONE_NO");
             String amount = bundle.getString("AMOUNT");
-            contactNoEdit.setText(phoneNo.substring(1,phoneNo.length()-2));
-            amountEdit.setText(amount.substring(1,amount.length()-2));
+            contactNoEdit.setText(phoneNo.substring(1,phoneNo.length()-1));
+            amountEdit.setText(amount.substring(1,amount.length()-1));
         }
         getSelfUser();
 
@@ -96,7 +96,7 @@ public class TransactionActivity extends AppCompatActivity {
         return true;
     }
 
-    private void doTransaction(String hashKey,long destAmount){
+    private void doTransaction(String hashKey,long destAmount,String toName){
         destAmount += Long.parseLong(amount);
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         currentUser.balance -= Long.parseLong(amount);
@@ -104,8 +104,8 @@ public class TransactionActivity extends AppCompatActivity {
         DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Calendar calobj = Calendar.getInstance();
         String date = df.format(calobj.getTime());
-        Transaction destTransaction = new Transaction(hashKey,fUser.getUid(),amount,date,"received");
-        Transaction srcTransaction = new Transaction(hashKey,fUser.getUid(),amount,date,"paid");
+        Transaction destTransaction = new Transaction(hashKey,fUser.getUid(),toName,currentUser.name,amount,date,"received");
+        Transaction srcTransaction = new Transaction(hashKey,fUser.getUid(),toName,currentUser.name,amount,date,"paid");
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
         reference.child(hashKey).child("balance").setValue(destAmount);
@@ -152,9 +152,10 @@ public class TransactionActivity extends AppCompatActivity {
                     }
                     Log.e(TAG,"key" + map.keySet());
                     HashMap map2 = (HashMap) map.get(hashKey);
+                    String toName = (String) map2.get("name");
                     long destAmount = (long) map2.get("balance");
                     Log.e(TAG,"Dest user balance = " + destAmount);
-                    doTransaction(hashKey,destAmount);
+                    doTransaction(hashKey,destAmount,toName);
                 }
             }
 
