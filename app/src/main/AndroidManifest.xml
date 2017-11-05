@@ -23,11 +23,11 @@
         <activity
             android:name=".activities.PassbookActivity"
             android:label="@string/title_activity_passbook"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activities.ChatActivity" />
-        <activity android:name=".activities.TransactionActivity"></activity>
-        <activity android:name=".activities.WalletStatement"></activity>
+        <activity android:name=".activities.TransactionActivity" />
+        <activity android:name=".activities.WalletStatement" />
+        <activity android:name=".activities.Splasher"></activity>
     </application>
 
 </manifest>
