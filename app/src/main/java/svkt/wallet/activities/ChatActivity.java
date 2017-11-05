@@ -92,8 +92,6 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         aiService = AIService.getService(ChatActivity.this,configuration);
         aiService.setListener(ChatActivity.this);
 
-
-
         requestEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -122,12 +120,14 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
             @Override
             public void onClick(View view) {
                 request = requestEdit.getText().toString();
-                Message message = new Message("sent",request);
-                messageList.add(message);
-                recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
-                requestEdit.setText("");
-                aiRequest.setQuery(request);
-                new RequestAPIAI().execute(aiRequest);
+                if(!request.isEmpty()){
+                    Message message = new Message("sent", request);
+                    messageList.add(message);
+                    recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this, messageList));
+                    requestEdit.setText("");
+                    aiRequest.setQuery(request);
+                    new RequestAPIAI().execute(aiRequest);
+                }
             }
         });
 
@@ -143,9 +143,6 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
     public void onResult(AIResponse response) {
         Result result = response.getResult();
         Log.e(TAG,"OnResult = " + response + " Result parameter = " + result.getParameters());
-//        Log.e(TAG,"Message = " + result.getFulfillment().getMessages());
-//        Log.e(TAG,"Speech = " + result.getFulfillment().getSpeech());
-//        Log.e(TAG,"Fullfillment = " + result.getFulfillment());
         if(isListenQuery){
             Message message = new Message("sent",result.getResolvedQuery());
             messageList.add(message);
@@ -169,7 +166,6 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                     Log.e(TAG,"Key = " + key);
                     params.add(String.valueOf(map.get(key)));
                 }
-
                 if(params.size() == 2){
                     Intent intent = new Intent(ChatActivity.this,TransactionActivity.class);
                     intent.putExtra("PHONE_NO",params.get(0));
@@ -181,7 +177,6 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
             case "getWalletStatement":
                 startActivity(new Intent(ChatActivity.this , WalletStatement.class));
                 break;
-
             case "passToPassbook":
                 HashMap<String, JsonElement> passMap = result.getParameters();
                 Log.e(TAG,"passMap = " + passMap);

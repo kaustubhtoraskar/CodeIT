@@ -121,6 +121,7 @@ public class ReceivedFragment extends Fragment {
                 Transaction transaction = dataSnapshot.getValue(Transaction.class);
                 if(transaction.type.equals("received")) {
                     transactionList.add(transaction);
+                    transactionListAdapter = new TransactionListAdapter(getActivity(),transactionList);
                     recyclerView.setAdapter(transactionListAdapter);
                 }
             }
