@@ -17,11 +17,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@string/total_balance"
+            android:textSize="24sp" />
+
+        <TextView
             android:id="@+id/totalBalance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="Total Balance"
+            android:textStyle="bold"
+            android:text="@string/Rs"
             android:textSize="24sp" />
 
         <android.support.design.widget.TextInputEditText

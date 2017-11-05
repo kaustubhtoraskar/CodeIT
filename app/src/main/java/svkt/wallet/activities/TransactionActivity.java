@@ -120,7 +120,7 @@ public class TransactionActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);
-                totalBalanceText.setText("" + currentUser.balance);
+                totalBalanceText.setText(getString(R.string.Rs) + currentUser.balance);
             }
 
             @Override
@@ -135,12 +135,11 @@ public class TransactionActivity extends AppCompatActivity {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Log.e(TAG,"Snapshot = " + dataSnapshot);
                 Log.e(TAG,"Value = " + dataSnapshot.getValue());
 
                 if(dataSnapshot.getValue() == null){
                     hideProgressDialog();
-                    Toast.makeText(TransactionActivity.this,"User does not exits",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TransactionActivity.this,R.string.no_user,Toast.LENGTH_SHORT).show();
                 }
                 else{
                     hideProgressDialog();
@@ -148,11 +147,9 @@ public class TransactionActivity extends AppCompatActivity {
                     for ( Object key : map.keySet() ) {
                         hashKey = (String) key;
                     }
-                    //Log.e(TAG,"Map" + map);
                     Log.e(TAG,"key" + map.keySet());
                     HashMap map2 = (HashMap) map.get(hashKey);
                     long destAmount = (long) map2.get("balance");
-                    //destUser = dataSnapshot.getValue(User.class);
                     Log.e(TAG,"Dest user balance = " + destAmount);
                     doTransaction(hashKey,destAmount);
                 }
@@ -165,8 +162,7 @@ public class TransactionActivity extends AppCompatActivity {
         });
     }
 
-    public void showProgressDialog(String message)
-    {
+    public void showProgressDialog(String message) {
         progressDialog=new ProgressDialog(TransactionActivity.this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage(message);
