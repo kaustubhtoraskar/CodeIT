@@ -35,14 +35,16 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
     public void onBindViewHolder(ViewHolder holder, int position) {
         Transaction transaction = transactions.get(position);
         Log.e("TransactionListAdapter",transaction.from);
-        holder.transactionName.setText(transaction.fromName);
+
         holder.amount.setText(context.getString(R.string.Rs) +transaction.amount);
         holder.transactionDate.setText(transaction.date);
         if(transaction.type.equals("paid")){
             holder.arrowView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_arrow_upward_orange_24dp));
+            holder.transactionName.setText(transaction.toName);
         }
         else if(transaction.type.equals("received")){
             holder.arrowView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_arrow_downward_orange_24dp));
+            holder.transactionName.setText(transaction.fromName);
         }
     }
 
