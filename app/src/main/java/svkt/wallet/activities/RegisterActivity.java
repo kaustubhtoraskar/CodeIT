@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -103,11 +104,44 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean isValid(){
         //write some code here
         if(name.isEmpty()){
-            nameEdit.setError("Enter Name");
+            nameEdit.setError(getString(R.string.name_error));
             nameEdit.setFocusable(true);
             return false;
         }
+        else if(email.isEmpty() || !isEmailValid(email)){
+            emailEdit.setError(getString(R.string.email_error));
+            emailEdit.setFocusable(true);
+            return false;
+        }
+        else if(contactNo.isEmpty() || contactNo.length() != 10){
+            contactNoEdit.setError(getString(R.string.contact_no_error));
+            contactNoEdit.setFocusable(true);
+            return false;
+        }
+        else if(password.isEmpty() || password.length() < 8){
+            passwordEdit.setError(getString(R.string.password_error));
+            passwordEdit.setFocusable(true);
+            return false;
+        }
+        else if(!confirmPassword.equals(password)){
+            Toast.makeText(RegisterActivity.this,R.string.password_match_error,Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(cardNo.isEmpty() || cardNo.length() !=16){
+            cardNoEdit.setError(getString(R.string.card_no_error));
+            cardNoEdit.setFocusable(true);
+            return false;
+        }
+        else if(expiryDate.isEmpty()){
+            expiryDateEdit.setError(getString(R.string.expiry_date_error));
+            expiryDateEdit.setFocusable(true);
+            return false;
+        }
         return true;
+    }
+
+    private boolean isEmailValid(String email){
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public void showProgressDialog()

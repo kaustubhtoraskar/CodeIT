@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -83,17 +84,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean isValid(){
-        if(email.isEmpty()){
-            emailEdit.setError("Enter valid email");
+        if(email.isEmpty() || !isEmailValid(email)){
+            emailEdit.setError(getString(R.string.email_error));
             emailEdit.setFocusable(true);
             return false;
         }
-        else if(password.isEmpty()){
-                passwordEdit.setError("Passowrd must be of atleast 8 characters");
-                passwordEdit.setFocusable(true);
-                return false;
+        else if(password.isEmpty() || password.length() < 8){
+            passwordEdit.setError(getString(R.string.password_error));
+            passwordEdit.setFocusable(true);
+            return false;
         }
         return true;
+    }
+
+    private boolean isEmailValid(String email){
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public void signInAccount()
@@ -102,8 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful())
-                        {
+                        if(task.isSuccessful()) {
                             Log.e(TAG, "Sign In complete:" + task.isSuccessful());
                             firebaseUser = firebaseAuth.getCurrentUser();
                             databaseReference= FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());

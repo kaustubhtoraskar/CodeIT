@@ -1,4 +1,19 @@
 <resources>
+
+    <!--LoginActivity-->
+    <string name="email_error">Please enter valid email</string>
+    <string name="password_error">Please enter a password of minimum 8 characters</string>
+    <string name="error">An error has encountered</string>
+
+    <!--RegisterActivity-->
+    <string name="name_error">Please enter your name</string>
+    <string name="name">Name</string>
+    <string name="contact_no_error">Please enter contact no</string>
+    <string name="contact_no">Contact No</string>
+    <string name="password_match_error">Password and Confirmed password are not same</string>
+    <string name="card_no_error">Please enter card no</string>
+    <string name="expiry_date_error">Please card expiry date</string>
+
     <string name="app_name">Wallet</string>
     <string name="emailHint">Email</string>
     <string name="passwordHint">Password</string>
