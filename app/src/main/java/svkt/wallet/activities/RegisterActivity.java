@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,14 +27,15 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
     private TextInputEditText nameEdit,emailEdit,contactNoEdit,passwordEdit,confirmPassEdit;
-    private TextInputEditText cardNoEdit,expiryDateEdit;
+    private TextInputEditText cardNoEdit;
     private Button registerButton;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private DatabaseReference databaseReference;
-    private String name,email,contactNo,password,confirmPassword;
+    private String name,email,contactNo,password,confirmPassword,day,year;
     private String cardNo,expiryDate;
     private ProgressDialog progressDialog;
+    private Spinner daySpinner,yearSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +49,9 @@ public class RegisterActivity extends AppCompatActivity {
         passwordEdit = findViewById(R.id.password);
         confirmPassEdit = findViewById(R.id.confirmPassword);
         cardNoEdit = findViewById(R.id.cardno);
-        expiryDateEdit = findViewById(R.id.expiryDate);
         registerButton = findViewById(R.id.registerBtn);
+        daySpinner = findViewById(R.id.daySpinner);
+        yearSpinner = findViewById(R.id.yearSpinner);
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -68,7 +71,9 @@ public class RegisterActivity extends AppCompatActivity {
                 password = passwordEdit.getText().toString();
                 confirmPassword = confirmPassEdit.getText().toString();
                 cardNo = cardNoEdit.getText().toString();
-                expiryDate = expiryDateEdit.getText().toString();
+                day = daySpinner.getSelectedItem().toString();
+                year = yearSpinner.getSelectedItem().toString();
+                expiryDate = day + "/" + year;
 
                 if(isValid()){
                     showProgressDialog();
@@ -133,8 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
         else if(expiryDate.isEmpty()){
-            expiryDateEdit.setError(getString(R.string.expiry_date_error));
-            expiryDateEdit.setFocusable(true);
+            Toast.makeText(RegisterActivity.this,R.string.expiry_date_error,Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

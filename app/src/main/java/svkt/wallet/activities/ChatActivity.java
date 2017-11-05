@@ -1,14 +1,16 @@
 package svkt.wallet.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +44,6 @@ import ai.api.model.AIError;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
-import svkt.wallet.Manifest;
 import svkt.wallet.R;
 import svkt.wallet.adapter.RequestMessageAdapter;
 import svkt.wallet.models.Message;
@@ -184,6 +185,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
             case "passToPassbook":
                 HashMap<String, JsonElement> passMap = result.getParameters();
                 Log.e(TAG,"passMap = " + passMap);
+                showPassBook();
                 break;
             default:
                 Log.e(TAG,"Response = " + result.getFulfillment().getSpeech());
@@ -346,9 +348,51 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                 break;
 
             case R.id.action_logout :
+                signOutDialog();
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void signOutDialog() {
+        final AlertDialog.Builder builder=new AlertDialog.Builder(ChatActivity.this);
+        builder.setMessage("Do you want to Sign Out").setTitle("Sign Out");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                try {
+                    if(isInternetConnected()) {
+                        FirebaseAuth.getInstance().signOut();
+                        finish();
+                        startActivity(new Intent(ChatActivity.this,LoginActivity.class));
+                    }
+                }
+                catch (Exception e) {
+                    Toast.makeText(ChatActivity.this,R.string.error,Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+        AlertDialog dialog=builder.create();
+        dialog.show();
+    }
+
+    private boolean isInternetConnected()
+    {
+        ConnectivityManager connectivityManager=(ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
+        if(networkInfo==null || !networkInfo.isConnected() || !networkInfo.isAvailable()) {
+            Toast.makeText(ChatActivity.this,"No Internet Connectivity",Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 }

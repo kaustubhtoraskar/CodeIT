@@ -1,9 +1,14 @@
 package svkt.wallet.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -211,10 +216,52 @@ public class TransactionActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_logout :
+                signOutDialog();
                 break;
 
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void signOutDialog() {
+        final AlertDialog.Builder builder=new AlertDialog.Builder(TransactionActivity.this);
+        builder.setMessage("Do you want to Sign Out").setTitle("Sign Out");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                try {
+                    if(isInternetConnected()) {
+                        FirebaseAuth.getInstance().signOut();
+                        finish();
+                        startActivity(new Intent(TransactionActivity.this,LoginActivity.class));
+                    }
+                }
+                catch (Exception e) {
+                    Toast.makeText(TransactionActivity.this,R.string.error,Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+        AlertDialog dialog=builder.create();
+        dialog.show();
+    }
+
+    private boolean isInternetConnected()
+    {
+        ConnectivityManager connectivityManager=(ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
+        if(networkInfo==null || !networkInfo.isConnected() || !networkInfo.isAvailable()) {
+            Toast.makeText(TransactionActivity.this,"No Internet Connectivity",Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 }
