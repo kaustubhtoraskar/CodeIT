@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import svkt.wallet.R;
+import svkt.wallet.models.Message;
 
 /**
  * Created by Hanumaan on 11/4/2017.
@@ -18,9 +19,9 @@ import svkt.wallet.R;
 public class RequestMessageAdapter extends RecyclerView.Adapter<RequestMessageAdapter.ViewHolder>{
 
     private Activity activity;
-    private ArrayList<String> messageList;
+    private ArrayList<Message> messageList;
 
-    public RequestMessageAdapter(Activity activity, ArrayList<String> messageList){
+    public RequestMessageAdapter(Activity activity, ArrayList<Message> messageList){
         this.activity = activity;
         this.messageList = messageList;
     }
@@ -32,7 +33,15 @@ public class RequestMessageAdapter extends RecyclerView.Adapter<RequestMessageAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.messageView.setText(messageList.get(position));
+        Message message = messageList.get(position);
+        if(message.type.equals("sent")) {
+            holder.messageView.setText(message.message);
+            holder.responseTextView.setVisibility(View.GONE);
+        }
+        else if(message.type.equals("received")){
+            holder.responseTextView.setText(message.message);
+            holder.messageView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -42,9 +51,11 @@ public class RequestMessageAdapter extends RecyclerView.Adapter<RequestMessageAd
 
     class ViewHolder extends RecyclerView.ViewHolder{
         TextView messageView;
-        public ViewHolder(View itemView) {
+        TextView responseTextView;
+        ViewHolder(View itemView) {
             super(itemView);
             messageView = itemView.findViewById(R.id.messageTextView);
+            responseTextView = itemView.findViewById(R.id.responseTextView);
         }
     }
 }

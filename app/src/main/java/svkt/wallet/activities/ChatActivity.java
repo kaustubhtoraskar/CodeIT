@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,6 +39,7 @@ import ai.api.model.AIResponse;
 import ai.api.model.Result;
 import svkt.wallet.R;
 import svkt.wallet.adapter.RequestMessageAdapter;
+import svkt.wallet.models.Message;
 import svkt.wallet.models.User;
 
 public class ChatActivity extends AppCompatActivity implements AIListener{
@@ -52,7 +55,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
     private String request;
     private ProgressDialog progressDialog;
     private RecyclerView recyclerView;
-    private ArrayList<String> messageList;
+    private ArrayList<Message> messageList;
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
 
@@ -65,7 +68,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
         requestEdit = findViewById(R.id.requestEdit);
         recyclerView = findViewById(R.id.recyclerView);
 
-        messageList = new ArrayList<String>();
+        messageList = new ArrayList<Message>();
         LinearLayoutManager manager = new LinearLayoutManager(ChatActivity.this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
@@ -83,7 +86,8 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
             public void onClick(View view) {
 //              aiService.startListening();
                 request = requestEdit.getText().toString();
-                messageList.add(request);
+                Message message = new Message("sent",request);
+                messageList.add(message);
                 recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
                 requestEdit.setText("");
                 aiRequest.setQuery(request);
@@ -96,6 +100,9 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
     public void onResult(AIResponse response) {
         Result result = response.getResult();
         Log.e(TAG,"OnResult = " + response + " Result parameter = " + result.getParameters());
+        Log.e(TAG,"Message = " + result.getFulfillment().getMessages());
+        Log.e(TAG,"Speech = " + result.getFulfillment().getSpeech());
+        Log.e(TAG,"Fullfillment = " + result.getFulfillment());
 
         switch (result.getAction()){
             case "checkBalance":
@@ -121,7 +128,32 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                     startActivity(intent);
                 }
                 break;
+            default:
+                Log.e(TAG,"Response = " + result.getFulfillment().getSpeech());
+                Message message = new Message("received",result.getFulfillment().getSpeech());
+                messageList.add(message);
+                recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
+                break;
         }
+    }
+
+    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            finishAffinity();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this,R.string.press_back_to_exit, Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
     private void showBalance(){
@@ -132,7 +164,8 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 hideProgressDialog();
                 User user = dataSnapshot.getValue(User.class);
-                messageList.add("Your current balance is " + user.balance);
+                Message message = new Message("received","Your current balance is " + user.balance);
+                messageList.add(message);
                 recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
             }
 
@@ -144,8 +177,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
     }
 
     private void doTranscation(){
-        messageList.add("Do some transcation");
-        recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
+        //recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
         startActivity(new Intent(ChatActivity.this,TransactionActivity.class));
     }
 

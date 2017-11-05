@@ -10,23 +10,21 @@
         android:id="@+id/messageTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:background="@drawable/textviewstyle"
-        android:layout_marginRight="100dp"
+        android:background="@drawable/responsetextstyle"
+        android:layout_marginLeft="100dp"
+        android:textColor="@color/lightText"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        />
+        android:textSize="20sp"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/responseTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/responsetextstyle"
-        android:layout_marginLeft="100dp"
-        android:layout_marginBottom="10dp"
         android:textSize="20sp"
-        android:layout_marginTop="10dp"
-        />
-
+        android:background="@drawable/textviewstyle"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
 
 </android.support.v7.widget.LinearLayoutCompat>
