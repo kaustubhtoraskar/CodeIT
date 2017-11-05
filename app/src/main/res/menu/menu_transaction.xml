@@ -12,4 +12,9 @@
         android:orderInCategory="100"
         android:title="@string/passbook"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_statement"
+        android:orderInCategory="100"
+        android:title="@string/passbook"
+        app:showAsAction="never" />
 </menu>

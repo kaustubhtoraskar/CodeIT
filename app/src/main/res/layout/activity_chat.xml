@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="svkt.wallet.activities.ChatActivity">
+    tools:context="svkt.wallet.activities.ChatActivity"
+    android:background="@drawable/background">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
