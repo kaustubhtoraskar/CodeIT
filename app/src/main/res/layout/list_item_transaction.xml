@@ -18,7 +18,7 @@
             android:layout_marginLeft="10dp"/>
 
         <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="195dp"
+            android:layout_width="257dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_gravity="center">

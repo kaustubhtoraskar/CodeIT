@@ -1,7 +1,11 @@
 package svkt.wallet.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -68,22 +72,26 @@ public class PassbookActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id)
+        {
+            case R.id.action_chat:
+            {
+                startActivity(new Intent(PassbookActivity.this,ChatActivity.class));
+                break;
+            }
+            case R.id.action_passbook :
+            {
+                startActivity(new Intent(PassbookActivity.this,PassbookActivity.class));
+                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    private class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        SectionsPagerAdapter(FragmentManager fm) {
+        public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -92,11 +100,14 @@ public class PassbookActivity extends AppCompatActivity {
             switch(position)
             {
                 case 0 :
-                    return new AllFragment();
+                    AllFragment allFragment = new AllFragment();
+                    return allFragment;
                 case 1 :
-                    return new PaidFragment();
+                    PaidFragment paidFragment = new PaidFragment();
+                    return paidFragment;
                 case 2 :
-                    return new ReceivedFragment();
+                    ReceivedFragment receivedFragment = new ReceivedFragment();
+                    return receivedFragment;
             }
             return null;
         }

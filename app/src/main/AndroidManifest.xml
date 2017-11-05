@@ -12,21 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.LoginActivity">
+        <activity android:name=".activities.LoginActivity"></activity>
+        <activity android:name=".activities.RegisterActivity" />
+        <activity
+            android:name=".activities.PassbookActivity"
+            android:label="@string/title_activity_passbook"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.RegisterActivity" />
-        <activity
-            android:name=".activities.PassbookActivity"
-            android:label="@string/title_activity_passbook"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.ChatActivity" />
-        <activity android:name=".activities.TransactionActivity">
-        </activity>
+        <activity android:name=".activities.TransactionActivity"></activity>
+        <activity android:name=".activities.WalletStatement"></activity>
     </application>
 
 </manifest>
