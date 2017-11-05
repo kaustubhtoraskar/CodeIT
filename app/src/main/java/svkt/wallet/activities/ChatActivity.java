@@ -168,8 +168,12 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                     startActivity(intent);
                 }
                 break;
-            case "getStatement":
+
+            case "getWalletStatement":
                 startActivity(new Intent(ChatActivity.this , WalletStatement.class));
+                break;
+
+            case "passToPassbook":
                 break;
             default:
                 Log.e(TAG,"Response = " + result.getFulfillment().getSpeech());
