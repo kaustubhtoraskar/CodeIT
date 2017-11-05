@@ -205,23 +205,25 @@ public class TransactionActivity extends AppCompatActivity {
         switch (id)
         {
             case R.id.action_chat:
-
                 startActivity(new Intent(TransactionActivity.this,ChatActivity.class));
                 break;
 
             case R.id.action_passbook :
-
                 startActivity(new Intent(TransactionActivity.this,PassbookActivity.class));
                 break;
 
             case R.id.action_statement :
-
                 startActivity(new Intent(TransactionActivity.this,WalletStatement.class));
                 break;
 
             case R.id.action_logout :
                 signOutDialog();
                 break;
+
+            case R.id.action_transfer :
+                startActivity(new Intent(TransactionActivity.this,TransactionActivity.class));
+                break;
+
 
         }
 

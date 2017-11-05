@@ -18,8 +18,14 @@
         android:title="@string/statement"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_transfer"
+        android:orderInCategory="100"
+        android:title="@string/transferFunds"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_logout"
         android:orderInCategory="100"
         android:title="@string/logout"
         app:showAsAction="never" />
+
 </menu>

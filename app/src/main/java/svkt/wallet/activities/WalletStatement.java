@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import svkt.wallet.R;
+import svkt.wallet.models.Transaction;
 import svkt.wallet.models.User;
 
 public class WalletStatement extends AppCompatActivity {
@@ -75,17 +76,14 @@ public class WalletStatement extends AppCompatActivity {
         switch (id)
         {
             case R.id.action_chat:
-
                 startActivity(new Intent(WalletStatement.this,ChatActivity.class));
                 break;
 
             case R.id.action_passbook :
-
                 startActivity(new Intent(WalletStatement.this,PassbookActivity.class));
                 break;
 
             case R.id.action_statement :
-
                 startActivity(new Intent(WalletStatement.this,WalletStatement.class));
                 break;
 
@@ -93,6 +91,9 @@ public class WalletStatement extends AppCompatActivity {
                 signOutDialog();
                 break;
 
+            case R.id.action_transfer :
+                startActivity(new Intent(WalletStatement.this,TransactionActivity.class));
+                break;
         }
 
         return super.onOptionsItemSelected(item);

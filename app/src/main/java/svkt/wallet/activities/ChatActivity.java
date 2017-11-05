@@ -47,6 +47,7 @@ import ai.api.model.Result;
 import svkt.wallet.R;
 import svkt.wallet.adapter.RequestMessageAdapter;
 import svkt.wallet.models.Message;
+import svkt.wallet.models.Transaction;
 import svkt.wallet.models.User;
 
 public class ChatActivity extends AppCompatActivity implements AIListener{
@@ -193,6 +194,7 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
                 messageList.add(message3);
                 recyclerView.setAdapter(new RequestMessageAdapter(ChatActivity.this,messageList));
                 break;
+
             default:
                 Log.e(TAG,"Response = " + result.getFulfillment().getSpeech());
                 Message message4 = new Message("received",result.getFulfillment().getSpeech());
@@ -356,6 +358,11 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
             case R.id.action_logout :
                 signOutDialog();
                 break;
+
+            case R.id.action_transfer :
+                startActivity(new Intent(ChatActivity.this,TransactionActivity.class));
+                break;
+
         }
 
         return super.onOptionsItemSelected(item);
