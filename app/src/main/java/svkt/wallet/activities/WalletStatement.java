@@ -29,6 +29,7 @@ public class WalletStatement extends AppCompatActivity {
         totalAmount = findViewById(R.id.totalAmount);
         name = findViewById(R.id.name);
         cardno = findViewById(R.id.cardno);
+        passParams();
     }
 
     public void passParams(){
